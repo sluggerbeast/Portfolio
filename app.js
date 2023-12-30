@@ -12,6 +12,9 @@ import {WebSocketServer} from "ws"
 import mongoose from "mongoose"
 import path from "path"
 import exp from "node:constants"
+
+
+////git push -u origin main
 // const wss = new WebSocketServer({ port: 8002 });// web socket example using ws library works with post man
 
 // wss.on('connection', function connection(ws) {
