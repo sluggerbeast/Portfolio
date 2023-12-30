@@ -1,10 +1,10 @@
 
 import mongoose from "mongoose"
 
-
+const dbCloud = "mongodb+srv://seth:seth@clusterhero.eqyr7.mongodb.net/?retryWrites=true&w=majority"
 const dbUrl = "mongodb://localhost:27017/saurabhSupport";
 
-export default  mongoose.connect(dbUrl,{useNewUrlParser:true})
+export default  mongoose.connect(dbCloud,{useNewUrlParser:true})
 
 const OneTicketSchema = {
 
