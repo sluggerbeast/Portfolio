@@ -85,7 +85,7 @@ app.post("/getchat",(req,res)=>{
         //const msgHistory = { sender: "agent", Msg: "Hello, I am saurabh.\n Welcome to the chat." }
         res.send(r);console.log(r);
     
-    })
+    }).catch((e)=>{console.log(`error ${e}`)})
 
         
 })
@@ -94,7 +94,7 @@ app.use(cors())
 app.use(express.json());
 app.get("/tickets",(req,res)=>{
          res.set('Access-Control-Allow-Origin', '*');
-        TicketCollectionTable.find(req.body).then((r)=>{ res.send(r);console.log(r)})
+        TicketCollectionTable.find(req.body).then((r)=>{ res.send(r);console.log(r)}).catch((e)=>{console.log(`error ${e}`)})
         
 })
  
@@ -109,7 +109,7 @@ app.post("/signup",(req,res)=>{
         "email":req.body.email,
         "password":req.body.password
     }
-    UserData.create(data).then((r)=>{console.log("data added ")})
+    UserData.create(data).then((r)=>{console.log("data added ")}).catch((e)=>{console.log(`error ${e}`)})
 })
 
 app.use(express.json());
@@ -124,13 +124,13 @@ app.post("/login",(req,res)=>{
     UserData.findOne(data).then((r)=>{console.log(r)}).catch((e)=>{console.log(`error with /chat getting chat data: ${e}`)})
 })
 
-app.use(express.static(path.join(__dirname, "dist")));
+app.use(express.static(path.join(__dirname, "src/dist")));
 app.use(express.static("public"));
 
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+    res.sendFile(path.join(__dirname, 'src/dist', 'index.html'));
 });
-const PORT=8001;
+const PORT= process.env.PORT || 8001;
 const mainServer = app.listen(PORT,()=>{console.log("Chat Application server started. . .")});
 
 var io =new Server(mainServer,{
