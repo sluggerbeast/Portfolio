@@ -38,7 +38,7 @@ app.use(cors())
 app.get("/get",(req,res)=>{
     console.log("get request");
     
-    res.send("<h1>get the page<h1><button>login</button>")
+    res.send("<h1>Server is acitive<h1>")
 })
 app.use(cors())
 app.use(express.json());
@@ -171,9 +171,9 @@ io.on('connection', (socket) => {
     // });
     
     const adminId = "12345";
-    socket.onAny((event, ...args) => {
-        console.log(event, args);
-      });
+    // socket.onAny((event, ...args) => {
+    //     console.log(event, args);
+    //   });
 
     
     socket.on("joinChat_admin",(soc)=>{
@@ -191,14 +191,35 @@ io.on('connection', (socket) => {
             const toSock = socList.get(to)
             const sendSock = socList.get(sender)
             console.log(sendSock)
+
+            /// this is where the message sent from the support chat box is recieved
+
+            /// I will add the logic of adding the chat messages to DB here
+
+           const ticketData= {uuid:sender,
+            name:sender,
+            email:"",
+            from:sender,
+            message:message,
+            to:to,
+            timestamp:""
+        }
+
+        
+        const TicketTable = mongoose.model(ticketData.uuid,OneTicketSchemaObj)
+        TicketTable.create(ticketData).then((res)=>{
+                 console.log(res)
+         }).catch((e)=>{console.log(`problem with adding message to DB: ${e}`)})
+
+
             socket.to(toSock).emit("rcv_privmsg",{
                 "sender":sender,
                 "Msg":message
             })
-            socket.to(sendSock).emit("rcv_privmsg",{
-                "sender":sender,
-                "Msg":message
-            })
+            // socket.to(sendSock).emit("rcv_privmsg",{
+            //     "sender":sender,
+            //     "Msg":message
+            // })
 
         })
         
@@ -206,23 +227,23 @@ io.on('connection', (socket) => {
 
     //console.log(Users)
     socket.on('my_support_chat', (msg) => { 
-            /// this is where the message sent from the support chat box is recieved
+        //     /// this is where the message sent from the support chat box is recieved
 
-            /// I will add the logic of adding the chat messages to DB here
+        //     /// I will add the logic of adding the chat messages to DB here
 
-           const ticketData= {uuid:msg.uuid,
-            name:msg.name,
-            email:msg.email,
-            from:msg.from,
-            message:msg.message,
-            timestamp:msg.timestamp
-        }
+        //    const ticketData= {uuid:msg.uuid,
+        //     name:msg.name,
+        //     email:msg.email,
+        //     from:msg.from,
+        //     message:msg.message,
+        //     timestamp:msg.timestamp
+        // }
 
         
-        // const TicketTable = mongoose.model(ticketData.uuid,OneTicketSchemaObj)
-        // TicketTable.create(ticketData).then((res)=>{
-        //         console.log(res)
-        // }).catch((e)=>{console.log(`problem with adding message to DB: ${e}`)})
+        // // const TicketTable = mongoose.model(ticketData.uuid,OneTicketSchemaObj)
+        // // TicketTable.create(ticketData).then((res)=>{
+        // //         console.log(res)
+        // // }).catch((e)=>{console.log(`problem with adding message to DB: ${e}`)})
         
 
         // io.emit('my_support_chat', (msg)); 

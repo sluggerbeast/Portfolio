@@ -23,6 +23,10 @@ const OneTicketSchema = {
     message:{
         type:String
     },
+    
+    to:{
+        type:String
+    },
     timestamp:{
         type:String
     }
