@@ -47,10 +47,30 @@ const TicketCollectionSchema = {
     
 }
 
+const contactMeSchema = { /// this schema is for the contact me from
+
+    name:{
+        type:String
+    },
+    email:{
+        type:String
+    },
+    subject:{
+        type:String
+    },
+    msg:{
+        type:String
+    },
+    
+}
+
 export const OneTicketSchemaObj = new mongoose.Schema(OneTicketSchema)
 
 const TicketCollectionSchemaObj = new mongoose.Schema(TicketCollectionSchema)
 
+const contactMeSchemaObj = new mongoose.Schema(contactMeSchema)
+
+export const contactMeTable = mongoose.model("contactme",contactMeSchemaObj);
 
 export const CommonTicketTable = mongoose.model("Ticket",OneTicketSchemaObj)
 export const TicketCollectionTable = mongoose.model("TicketCollection",TicketCollectionSchemaObj)

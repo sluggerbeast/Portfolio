@@ -3,7 +3,7 @@ import express from "express"
 import cors from "cors"
 import { getGlobals } from 'common-es'
 const { __dirname, __filename } = getGlobals(import.meta.url)
-import {TicketCollectionTable, OneTicketSchemaObj, CommonTicketTable} from "./src/models/auth.js"
+import {TicketCollectionTable, OneTicketSchemaObj, CommonTicketTable, contactMeTable} from "./src/models/auth.js"
 const app = express()
 const UserData = null
 import {Server} from "socket.io"
@@ -109,6 +109,22 @@ app.get("/tickets",(req,res)=>{ //// this end points gets all the entries in the
          res.set('Access-Control-Allow-Origin', '*');
         TicketCollectionTable.find(req.body).then((r)=>{ res.send(r);console.log(r)}).catch((e)=>{console.log(`error ${e}`)})
         
+})
+
+app.use(cors())
+app.use(express.json());
+app.post("/contactemail",(req,res)=>{ //// this get triggred from the contact me form 
+    res.set('Access-Control-Allow-Origin', '*');
+    console.log(req.body)
+    // const contactMsg = {
+        
+    //     name:cName,
+    // email:Cemail,
+    // subject:Csubject,
+    // msg:Cmsg}
+            
+
+    contactMeTable.create(req.body).then((r)=>{console.log("email recv ")}).catch((e)=>{console.log(`error ${e}`)})
 })
  
 app.use(cors())
