@@ -52,7 +52,7 @@ export const OneTicketSchemaObj = new mongoose.Schema(OneTicketSchema)
 const TicketCollectionSchemaObj = new mongoose.Schema(TicketCollectionSchema)
 
 
- //const TicketTable = mongoose.model("Ticket",OneTicketSchemaObj)
+export const CommonTicketTable = mongoose.model("Ticket",OneTicketSchemaObj)
 export const TicketCollectionTable = mongoose.model("TicketCollection",TicketCollectionSchemaObj)
 
 

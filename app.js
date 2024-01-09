@@ -3,7 +3,7 @@ import express from "express"
 import cors from "cors"
 import { getGlobals } from 'common-es'
 const { __dirname, __filename } = getGlobals(import.meta.url)
-import {TicketCollectionTable, OneTicketSchemaObj} from "./src/models/auth.js"
+import {TicketCollectionTable, OneTicketSchemaObj, CommonTicketTable} from "./src/models/auth.js"
 const app = express()
 const UserData = null
 import {Server} from "socket.io"
@@ -43,7 +43,7 @@ app.get("/get",(req,res)=>{
 })
 app.use(cors())
 app.use(express.json());
-app.post("/chat",(req,res)=>{
+app.post("/chat",(req,res)=>{ ///// this end point is doing the ticket creation, checks for the uuid if it exists in the ticket collections, if not then will create an entry in the table or collection.
     res.set('Access-Control-Allow-Origin', '*');
     console.log(req.body.ticketNo)
     TicketCollectionTable.findOne({"ticketNo":req.body.ticketNo}).then((r)=>{
@@ -58,16 +58,7 @@ app.post("/chat",(req,res)=>{
             }
             console.log(data1)
         TicketCollectionTable.create(data1).then((r)=>{console.log(`data added ${r}`)
-        const TicketTable = mongoose.model("Ticket",OneTicketSchemaObj)
-        TicketTable.create({
-
-            uuid:"1",
-            name:"agent", 
-            email:"",
-            from:"agent",
-            message:"this message is generated from Data base"
-            
-        })
+        
             }).catch((e)=>{console.log(`error ${e}`)})
         }
     }).catch((e)=>{console.log(`error from DB ${e}`)})
@@ -79,12 +70,30 @@ app.post("/chat",(req,res)=>{
 
 app.use(cors())
 app.use(express.json());
-app.post("/getchat",(req,res)=>{
+app.post("/getchat",(req,res)=>{ /// this end point gets all the chat of the current chat selected.
     res.set('Access-Control-Allow-Origin', '*');
     console.log("contact with server")
     const TicketTable = mongoose.model(req.body.ticketNo,OneTicketSchemaObj)
 
-    TicketTable.find({"uuid":req.body.ticketNo}).then((r)=>{
+    ////{"uuid":req.body.ticketNo}
+    TicketTable.find({
+        $or: [
+          { "uuid":req.body.ticketNo },
+          { "to": req.body.ticketNo }
+        ]
+      }).then((r)=>{
+        
+        //const msgHistory = { sender: "agent", Msg: "Hello, I am saurabh.\n Welcome to the chat." }
+        //res.send(r);//console.log(r);
+    
+    }).catch((e)=>{console.log(`error ${e}`)})
+
+    CommonTicketTable.find({
+        $or: [
+          { "uuid":req.body.ticketNo },
+          { "to": req.body.ticketNo }
+        ]
+      }).then((r)=>{ //// new code for retriving current chat from a common chat table.
         
         //const msgHistory = { sender: "agent", Msg: "Hello, I am saurabh.\n Welcome to the chat." }
         res.send(r);console.log(r);
@@ -96,7 +105,7 @@ app.post("/getchat",(req,res)=>{
 
 app.use(cors())
 app.use(express.json());
-app.get("/tickets",(req,res)=>{
+app.get("/tickets",(req,res)=>{ //// this end points gets all the entries in the ticketCollection table for the admin panel ticket info area.
          res.set('Access-Control-Allow-Origin', '*');
         TicketCollectionTable.find(req.body).then((r)=>{ res.send(r);console.log(r)}).catch((e)=>{console.log(`error ${e}`)})
         
@@ -206,11 +215,22 @@ io.on('connection', (socket) => {
             timestamp:""
         }
 
-        
-        const TicketTable = mongoose.model(ticketData.uuid,OneTicketSchemaObj)
+        if(ticketData.uuid!="12345"){
+            const TicketTable = mongoose.model(ticketData.uuid,OneTicketSchemaObj)
         TicketTable.create(ticketData).then((res)=>{
                  console.log(res)
          }).catch((e)=>{console.log(`problem with adding message to DB: ${e}`)})
+        }else{
+            const TicketTable = mongoose.model(ticketData.to,OneTicketSchemaObj)
+        TicketTable.create(ticketData).then((res)=>{
+                 console.log(res)
+         }).catch((e)=>{console.log(`problem with adding message to DB: ${e}`)})
+        }
+       
+
+         CommonTicketTable.create(ticketData).then((res)=>{
+            console.log(res)
+    }).catch((e)=>{console.log(`problem with adding message to DB: ${e}`)})
 
 
             socket.to(toSock).emit("rcv_privmsg",{
