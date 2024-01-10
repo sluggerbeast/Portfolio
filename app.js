@@ -107,7 +107,7 @@ app.use(cors())
 app.use(express.json());
 app.get("/tickets",(req,res)=>{ //// this end points gets all the entries in the ticketCollection table for the admin panel ticket info area.
          res.set('Access-Control-Allow-Origin', '*');
-        TicketCollectionTable.find(req.body).then((r)=>{ res.send(r);console.log(r)}).catch((e)=>{console.log(`error ${e}`)})
+        TicketCollectionTable.find(req.body).then((r)=>{ r.reverse(); res.send(r);console.log(r)}).catch((e)=>{console.log(`error ${e}`)})
         
 })
 
