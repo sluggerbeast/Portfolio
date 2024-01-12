@@ -28,7 +28,7 @@
 Feel free to connect with me on:
 
     LinkedIn: https://www.linkedin.com/in/SaurabhPareek98
-    Email: saurabhpareek31@gmail.com
+    Email: pareek_official@outlook.com
 
 ## Contributions
 
