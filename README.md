@@ -9,9 +9,9 @@
 
 ### Project 2: Project Name: Link to Project ( yet to be added)
 
-    Brief Description: Describe the project's purpose and key features.
-    Technologies Used: List the technologies used.
-    Live Demo: Provide a link to the live version if available.
+    Brief Description: This is a simple CMS mini Portfolio builder. It can save notes, links and images to showcase a creative profile. 
+    Technologies Used: React, Bootstrap.
+    Live Demo: https://port-jiph.onrender.com/notekka
 
 
 
@@ -36,8 +36,7 @@ I'm always open to feedback and collaboration. Feel free to contribute to my pro
 
 ## License
 
-This repository is licensed under the MIT License:
+This repository is licensed under the MIT License
 
 ## Acknowledgements
-    Need to be filled in.
-    Special thanks to... (List any resources, mentors, or communities that have helped you)
+    will be added soon.
