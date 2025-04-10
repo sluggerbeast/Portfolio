@@ -4,7 +4,6 @@
   "description": "",
   "type": "module",
   "main": "app.js",
-  
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon app.js -e js",
@@ -14,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "chatserver": "file:",
     "common-es": "^1.0.1",
     "express": "^4.18.2",
     "mongoose": "^8.0.2",
